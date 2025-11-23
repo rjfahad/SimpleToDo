@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="apps.jizzu.simpletodo">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Required for Android 12+ (API 31+) to schedule exact alarms -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".ui.App"
@@ -16,7 +18,8 @@
         <activity
             android:name=".ui.view.MainActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,35 +29,45 @@
         <activity
             android:name=".ui.view.task.AddTaskActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:exported="false" />
         <activity
             android:name=".ui.view.task.EditTaskActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:exported="false" />
         <activity
             android:name=".ui.view.task.TaskNoteActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:exported="false" />
         <activity
             android:name=".ui.view.settings.activity.SettingsActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:exported="false" />
         <activity
             android:name=".ui.view.ChangelogActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:exported="false" />
         <activity
             android:name=".ui.view.MainIntroActivity"
-            android:theme="@style/Theme.Intro" />
+            android:theme="@style/Theme.Intro"
+            android:exported="false" />
         <activity
             android:name=".ui.view.SearchActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:exported="false" />
 
         <service
             android:name=".service.widget.WidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
         <receiver
-            android:name=".service.alarm.AlarmReceiver"
-            android:process=":remote" />
-        <receiver android:name=".service.widget.WidgetProvider">
+            android:name=".service.alarm.AlarmReceiver" />
+        <receiver
+            android:name=".service.alarm.DismissReceiver"
+            android:exported="false" />
+        <receiver android:name=".service.widget.WidgetProvider"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

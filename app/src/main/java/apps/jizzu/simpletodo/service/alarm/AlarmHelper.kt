@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import apps.jizzu.simpletodo.data.models.Task
 import android.content.Context.NOTIFICATION_SERVICE
+import android.os.Build
 
 class AlarmHelper private constructor() {
     private lateinit var mAlarmManager: AlarmManager
@@ -21,9 +22,21 @@ class AlarmHelper private constructor() {
         val intent = Intent(mContext, AlarmReceiver::class.java)
             .putExtra("title", task.title)
             .putExtra("time_stamp", task.timeStamp)
+        val flags = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         val pendingIntent = PendingIntent.getBroadcast(mContext, task.timeStamp.toInt(),
-                intent, PendingIntent.FLAG_UPDATE_CURRENT)
-        mAlarmManager.set(AlarmManager.RTC_WAKEUP, task.date, pendingIntent)
+                intent, flags)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (mAlarmManager.canScheduleExactAlarms()) {
+                mAlarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, task.date, pendingIntent)
+            } else {
+                mAlarmManager.set(AlarmManager.RTC_WAKEUP, task.date, pendingIntent)
+            }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mAlarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, task.date, pendingIntent)
+        } else {
+            mAlarmManager.set(AlarmManager.RTC_WAKEUP, task.date, pendingIntent)
+        }
     }
 
     fun removeNotification(taskTimeStamp: Long, context: Context) {
@@ -33,8 +46,9 @@ class AlarmHelper private constructor() {
 
     fun removeAlarm(taskTimeStamp: Long) {
         val intent = Intent(mContext, AlarmReceiver::class.java)
+        val flags = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         val pendingIntent = PendingIntent.getBroadcast(mContext, taskTimeStamp.toInt(),
-                intent, PendingIntent.FLAG_UPDATE_CURRENT)
+                intent, flags)
         mAlarmManager.cancel(pendingIntent)
     }
 

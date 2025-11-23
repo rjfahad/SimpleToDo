@@ -4,47 +4,49 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.BroadcastReceiver
+import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
+import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import apps.jizzu.simpletodo.R
 import apps.jizzu.simpletodo.ui.view.MainActivity
 
-class AlarmReceiver : BroadcastReceiver() {
+class ReminderService : Service() {
 
-    override fun onReceive(context: Context, intent: Intent) {
-        val title = intent.getStringExtra("title")
-        val timeStamp = intent.getLongExtra("time_stamp", 0)
+    override fun onBind(intent: Intent?): IBinder? = null
 
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val notificationId = timeStamp.toInt()
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        val title = intent?.getStringExtra("title") ?: return START_NOT_STICKY
+        val timeStamp = intent.getLongExtra("time_stamp", 0).toInt()
 
         // Intent to launch the application when you click on notification
-        val resultIntent = Intent(context, MainActivity::class.java)
+        val resultIntent = Intent(this, MainActivity::class.java)
         resultIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         val flagsPending = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         } else {
             PendingIntent.FLAG_UPDATE_CURRENT
         }
-        val pendingIntent = PendingIntent.getActivity(context, notificationId, resultIntent, flagsPending)
+        val pendingIntent = PendingIntent.getActivity(this, timeStamp, resultIntent, flagsPending)
 
         // Dismiss action
-        val dismissIntent = Intent(context, DismissReceiver::class.java).apply {
-            putExtra("notification_id", notificationId)
+        val dismissIntent = Intent(this, DismissReceiver::class.java).apply {
+            putExtra("notification_id", timeStamp)
         }
-        val dismissPendingIntent = PendingIntent.getBroadcast(context, notificationId, dismissIntent, flagsPending)
+        val dismissPendingIntent = PendingIntent.getBroadcast(this, timeStamp, dismissIntent, flagsPending)
+
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         // Set NotificationChannel for Android Oreo
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = notificationManager.getNotificationChannel(NOTIFICATION_CHANNEL_ID)
 
             if (notificationChannel == null) {
-                val channel = NotificationChannel(NOTIFICATION_CHANNEL_ID, context.getString(R.string.notification_channel), NotificationManager.IMPORTANCE_HIGH).apply {
+                val channel = NotificationChannel(NOTIFICATION_CHANNEL_ID, getString(R.string.notification_channel), NotificationManager.IMPORTANCE_DEFAULT).apply {
                     enableLights(true)
                     lightColor = Color.BLUE
                     enableVibration(true)
@@ -54,24 +56,25 @@ class AlarmReceiver : BroadcastReceiver() {
             }
         }
 
-        val notification = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID).apply {
-            setContentTitle(context.getString(R.string.reminder_text))
+        val notification = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID).apply {
+            setContentTitle(getString(R.string.reminder_text))
             setContentText(title)
             setStyle(NotificationCompat.BigTextStyle().bigText(title))
-            color = ContextCompat.getColor(context, R.color.blue)
+            color = ContextCompat.getColor(this@ReminderService, R.color.blue)
             setSmallIcon(R.drawable.ic_check_circle_white_24dp)
             setDefaults(Notification.DEFAULT_SOUND or Notification.DEFAULT_VIBRATE or Notification.DEFAULT_LIGHTS)
             setContentIntent(pendingIntent)
             setAutoCancel(false)
-            priority = NotificationCompat.PRIORITY_HIGH
-            addAction(R.drawable.round_close_black_24, context.getString(R.string.dismiss), dismissPendingIntent)
+            setTimeoutAfter(0)
+            addAction(R.drawable.round_close_black_24, getString(R.string.dismiss), dismissPendingIntent)
         }
 
-        notificationManager.notify(notificationId, notification.build())
+       startForeground(timeStamp, notification.build())
+
+        return START_NOT_STICKY
     }
 
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "1"
-        const val GENERAL_NOTIFICATION_CHANNEL_ID = "2"
     }
 }

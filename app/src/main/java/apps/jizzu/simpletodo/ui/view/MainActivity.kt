@@ -27,11 +27,12 @@ import android.view.animation.DecelerateInterpolator
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat.getColor
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+import apps.jizzu.simpletodo.databinding.ActivityMainBinding
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import apps.jizzu.simpletodo.BuildConfig
+// import apps.jizzu.simpletodo.BuildConfig
 import apps.jizzu.simpletodo.R
 import apps.jizzu.simpletodo.data.models.Task
 import apps.jizzu.simpletodo.service.alarm.AlarmHelper
@@ -53,28 +54,28 @@ import apps.jizzu.simpletodo.vm.TaskListViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import daio.io.dresscode.matchDressCode
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.toolbar.*
-import kotterknife.bindView
 import top.wefor.circularanim.CircularAnim
 import java.util.*
 
 class MainActivity : BaseActivity() {
-    private val mRecyclerView: RecyclerView by bindView(R.id.rvTasksList)
-    private val mFab: FloatingActionButton by bindView(R.id.fabCreateNewTask)
+    private lateinit var binding: ActivityMainBinding
+    private val mRecyclerView: RecyclerView get() = binding.rvTasksList
+    private val mFab: FloatingActionButton get() = binding.fabCreateNewTask
     private var mSnackbar: Snackbar? = null
 
     private lateinit var mAdapter: RecyclerViewAdapter
     private lateinit var mPreferenceHelper: PreferenceHelper
     private lateinit var mNotificationManager: NotificationManager
     private lateinit var mViewModel: TaskListViewModel
+    private var mTaskList = arrayListOf<Task>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         matchDressCode()
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        initToolbar(getString(R.string.simple_todo_title), null, babMainMenu)
+        initToolbar(getString(R.string.simple_todo_title))
         mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         AlarmHelper.getInstance().init(applicationContext)
 
@@ -84,6 +85,11 @@ class MainActivity : BaseActivity() {
         PreferenceHelper.getInstance().init(applicationContext)
         mPreferenceHelper = PreferenceHelper.getInstance()
 
+        // Check notification permission on app open
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && mPreferenceHelper.getBoolean(PreferenceHelper.GENERAL_NOTIFICATION_IS_ON) && !isHasPermissions(Manifest.permission.POST_NOTIFICATIONS)) {
+            requestPerms(Manifest.permission.POST_NOTIFICATIONS)
+        }
+
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.layoutManager = LinearLayoutManager(this)
         mAdapter = RecyclerViewAdapter()
@@ -91,21 +97,22 @@ class MainActivity : BaseActivity() {
 
         showChangelogActivity()
         showRecyclerViewAnimation()
-        showRateThisAppDialog()
         createItemTouchHelper()
         initListeners()
         initCallbacks()
         initShortcuts()
     }
 
-    private fun updateViewState(tasks: List<Task>) = if (tasks.isEmpty()) showEmptyView() else showTaskList(tasks)
+    private fun updateViewState(tasks: List<Task>) {
+        if (tasks.isEmpty()) showEmptyView() else showTaskList(tasks)
+    }
 
     private fun showTaskList(tasks: List<Task>) {
         var isNeedToRecount = false
         if (mTaskList.size > tasks.size) isNeedToRecount = true
         mTaskList = tasks as ArrayList<Task>
         if (isNeedToRecount) recountTaskPositions()
-        llEmptyView.gone()
+        binding.llEmptyView.gone()
         mAdapter.updateData(mTaskList)
         mPreferenceHelper.putInt(PreferenceHelper.NEW_TASK_POSITION, mAdapter.itemCount)
         restoreAlarmsAfterMigration()
@@ -123,14 +130,14 @@ class MainActivity : BaseActivity() {
     private fun showEmptyView() {
         mTaskList = arrayListOf()
         mAdapter.updateData(mTaskList)
-        llEmptyView.visible()
+        binding.llEmptyView.visible()
         val anim = AnimationUtils.loadAnimation(this, R.anim.empty_view_animation).apply {
             startOffset = 300
             duration = 300
         }
         updateGeneralNotification()
         updateWidget()
-        llEmptyView.startAnimation(anim)
+        binding.llEmptyView.startAnimation(anim)
     }
 
     private fun showRecyclerViewAnimation() {
@@ -247,7 +254,7 @@ class MainActivity : BaseActivity() {
     private fun showChangelogActivity() {
         if (mPreferenceHelper.getBoolean(PreferenceHelper.IS_FIRST_LAUNCH) && mPreferenceHelper.getInt(PreferenceHelper.VERSION_CODE) == 0) {
             startActivityForResult(Intent(this, MainIntroActivity::class.java), APP_INTRO_CODE)
-        } else if (mPreferenceHelper.getInt(PreferenceHelper.VERSION_CODE) != BuildConfig.VERSION_CODE) {
+        } else if (mPreferenceHelper.getInt(PreferenceHelper.VERSION_CODE) != 1) {
             startActivity(Intent(this, ChangelogActivity::class.java))
         }
     }
@@ -293,7 +300,7 @@ class MainActivity : BaseActivity() {
             if (isHasPermissions(Manifest.permission.RECORD_AUDIO)) {
                 showVoiceInput()
             } else {
-                requestPermissionWithRationale(clMain, getString(R.string.permission_microphone_snackbar_with_rationale),
+                requestPermissionWithRationale(binding.clMain, getString(R.string.permission_microphone_snackbar_with_rationale),
                         Manifest.permission.RECORD_AUDIO, null, mFab)
             }
             true
@@ -309,10 +316,15 @@ class MainActivity : BaseActivity() {
 
             override fun onShadowHide() = setToolbarShadow(10f, 0f)
         })
+
+        // BottomAppBar navigation (settings icon) click handling
+        binding.babMainMenu.setNavigationOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
     }
 
     private fun animateToolbar(translationValue: Float, interpolator: TimeInterpolator) {
-        toolbar.animate().translationY(translationValue).interpolator = interpolator
+        toolbar.animate().translationY(translationValue).setInterpolator(interpolator)
     }
 
     private fun showVoiceInput() {
@@ -328,7 +340,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun createViewModel() = ViewModelProviders.of(this).get(TaskListViewModel(application)::class.java)
+    private fun createViewModel() = ViewModelProvider(this).get(TaskListViewModel(application)::class.java)
 
     private fun updateWidget() {
         val intent = Intent(this, WidgetProvider::class.java)
@@ -347,8 +359,8 @@ class MainActivity : BaseActivity() {
 
     private fun showGeneralNotification() {
         val stringBuilder = StringBuilder()
-        val pendingIntent = PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java),
-                PendingIntent.FLAG_UPDATE_CURRENT)
+        val flags = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        val pendingIntent = PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java), flags)
 
         for (task in mTaskList) {
             stringBuilder.append("• ").append(task.title)
@@ -428,30 +440,33 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        var isAllowed = true
-
-        when (requestCode) {
-            PERMISSION_REQUEST_CODE -> {
-                for (res in grantResults) {
-                    // If user granted all permissions.
-                    isAllowed = isAllowed && res == PackageManager.PERMISSION_GRANTED
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            for (i in permissions.indices) {
+                when (permissions[i]) {
+                    Manifest.permission.RECORD_AUDIO -> {
+                        if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                            showVoiceInput()
+                        } else {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && shouldShowRequestPermissionRationale(Manifest.permission.RECORD_AUDIO)) {
+                                toast(getString(R.string.permission_microphone_denied_toast))
+                            } else {
+                                showNoPermissionSnackbar(binding.clMain, getString(R.string.permission_microphone_snackbar_no_permission),
+                                        getString(R.string.permission_microphone_toast), mFab)
+                            }
+                        }
+                    }
+                    Manifest.permission.POST_NOTIFICATIONS -> {
+                        if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                            updateGeneralNotification()
+                        } else {
+                            // Disable general notification
+                            mPreferenceHelper.putBoolean(PreferenceHelper.GENERAL_NOTIFICATION_IS_ON, false)
+                            showNoPermissionSnackbar(binding.clMain, getString(R.string.permission_notification_snackbar_no_permission),
+                                    getString(R.string.permission_notification_toast))
+                        }
+                    }
                 }
-            }
-
-            else -> {
-                // If user not granted permissions.
-                isAllowed = false
-            }
-        }
-
-        if (isAllowed) {
-            showVoiceInput()
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (shouldShowRequestPermissionRationale(Manifest.permission.RECORD_AUDIO)) {
-                toast(getString(R.string.permission_microphone_denied_toast))
-            } else {
-                showNoPermissionSnackbar(clMain, getString(R.string.permission_microphone_snackbar_no_permission),
-                        getString(R.string.permission_microphone_toast), mFab)
             }
         }
     }
@@ -485,14 +500,14 @@ class MainActivity : BaseActivity() {
         if (requestCode == APP_INTRO_CODE) {
             if (resultCode == RESULT_OK) {
                 mPreferenceHelper.putBoolean(PreferenceHelper.IS_FIRST_LAUNCH, false)
-                mPreferenceHelper.putInt(PreferenceHelper.VERSION_CODE, BuildConfig.VERSION_CODE)
+                mPreferenceHelper.putInt(PreferenceHelper.VERSION_CODE, 1)
             } else {
                 finish()
             }
         }
 
         if (requestCode == SPEECH_INPUT_CODE && resultCode == RESULT_OK && data != null) {
-            val result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+            val result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)!!
             val task = Task().apply {
                 title = result[0].capitalize()
                 this.position = mAdapter.itemCount
@@ -502,7 +517,6 @@ class MainActivity : BaseActivity() {
     }
 
     companion object {
-        var mTaskList = arrayListOf<Task>()
         private const val SPEECH_INPUT_CODE = 111
         private const val APP_INTRO_CODE = 222
     }

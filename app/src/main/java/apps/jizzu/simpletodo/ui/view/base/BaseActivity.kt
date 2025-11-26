@@ -7,12 +7,13 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
-import android.provider.Settings
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.provider.Settings
 import android.widget.EditText
 import android.widget.ScrollView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
@@ -24,20 +25,24 @@ import apps.jizzu.simpletodo.ui.view.task.EditTaskActivity
 import apps.jizzu.simpletodo.utils.toastLong
 import com.google.android.material.snackbar.Snackbar
 import daio.io.dresscode.dressCodeStyleId
-import kotlinx.android.synthetic.main.toolbar.*
 
 abstract class BaseActivity : AppCompatActivity() {
+    lateinit var toolbar: Toolbar
+    lateinit var tvToolbarTitle: TextView
 
     override fun onResume() {
         super.onResume()
         initStatusBar()
     }
 
-    fun initToolbar(titleText: String = "", drawable: Int? = R.drawable.round_arrow_back_black_24, view: Toolbar? = toolbar) {
-        title = ""
-        tvToolbarTitle.text = titleText
+    fun initToolbar(titleText: String = "", drawable: Int? = R.drawable.round_arrow_back_black_24, view: Toolbar? = null) {
+        val toolbarView = view ?: findViewById(R.id.toolbar)
+        if (toolbarView != null) {
+            toolbar = toolbarView
+            tvToolbarTitle = toolbarView.findViewById(R.id.tvToolbarTitle)
+            title = ""
+            tvToolbarTitle.text = titleText
 
-        if (toolbar != null) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                 val color = when (dressCodeStyleId) {
                     R.style.AppTheme_Light -> R.color.greyWhite
@@ -48,7 +53,7 @@ abstract class BaseActivity : AppCompatActivity() {
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
                 window.statusBarColor = ContextCompat.getColor(this, color)
             }
-            setSupportActionBar(view)
+            setSupportActionBar(toolbarView)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             if (drawable != null) {
                 supportActionBar?.setHomeAsUpIndicator(drawable)
@@ -60,9 +65,9 @@ abstract class BaseActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             when (dressCodeStyleId) {
                 R.style.AppTheme_Light -> {
-                    var flags = toolbar.systemUiVisibility
+                    var flags = this.toolbar.systemUiVisibility
                     flags = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                    toolbar.systemUiVisibility = flags
+                    this.toolbar.systemUiVisibility = flags
                     this.window.statusBarColor = Color.WHITE
                 }
                 R.style.AppTheme_Dark -> ContextCompat.getColor(this, R.color.deepBlueGrey)
@@ -101,7 +106,7 @@ abstract class BaseActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ValueAnimator.ofFloat(start, end).apply {
                 addUpdateListener { updatedAnimation ->
-                    toolbar.elevation = updatedAnimation.animatedValue as Float
+                    this@BaseActivity.toolbar.elevation = updatedAnimation.animatedValue as Float
                 }
                 duration = 500
                 start()

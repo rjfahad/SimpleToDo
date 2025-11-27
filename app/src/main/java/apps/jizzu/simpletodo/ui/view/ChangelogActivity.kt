@@ -2,21 +2,24 @@ package apps.jizzu.simpletodo.ui.view
 
 import android.os.Bundle
 import android.view.MenuItem
-import apps.jizzu.simpletodo.BuildConfig
+// import apps.jizzu.simpletodo.BuildConfig
 import apps.jizzu.simpletodo.R
+import apps.jizzu.simpletodo.databinding.ActivityChangelogBinding
 import apps.jizzu.simpletodo.ui.view.base.BaseActivity
 import apps.jizzu.simpletodo.utils.PreferenceHelper
 import daio.io.dresscode.matchDressCode
-import kotlinx.android.synthetic.main.activity_changelog.*
 
 class ChangelogActivity : BaseActivity() {
+
+    private lateinit var binding: ActivityChangelogBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         matchDressCode()
-        setContentView(R.layout.activity_changelog)
+        binding = ActivityChangelogBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         initToolbar(getString(R.string.whats_new_title), R.drawable.round_close_black_24)
-        btnConfirm.setOnClickListener { onBackPressed() }
+        binding.btnConfirm.setOnClickListener { onBackPressed() }
     }
 
     override fun onOptionsItemSelected(item: MenuItem) =
@@ -27,6 +30,6 @@ class ChangelogActivity : BaseActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        PreferenceHelper.getInstance().putInt(PreferenceHelper.VERSION_CODE, BuildConfig.VERSION_CODE)
+        PreferenceHelper.getInstance().putInt(PreferenceHelper.VERSION_CODE, 1)
     }
 }

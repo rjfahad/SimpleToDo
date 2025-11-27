@@ -14,6 +14,7 @@ import android.widget.EditText
 import android.widget.TimePicker
 import androidx.core.content.ContextCompat
 import apps.jizzu.simpletodo.R
+import apps.jizzu.simpletodo.databinding.ActivityTaskDetailsBinding
 import apps.jizzu.simpletodo.ui.view.task.TaskNoteActivity
 import apps.jizzu.simpletodo.utils.DateAndTimeFormatter
 import apps.jizzu.simpletodo.utils.PreferenceHelper
@@ -22,19 +23,20 @@ import apps.jizzu.simpletodo.utils.visible
 import apps.jizzu.simpletodo.vm.base.BaseViewModel
 import daio.io.dresscode.dressCodeStyleId
 import daio.io.dresscode.matchDressCode
-import kotlinx.android.synthetic.main.activity_task_details.*
-import kotterknife.bindView
 import java.util.*
 
 abstract class BaseTaskActivity : BaseActivity(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
-    val mTitleEditText: EditText by bindView(R.id.tvTaskTitle)
+    lateinit var binding: ActivityTaskDetailsBinding
+    lateinit var mTitleEditText: EditText
     lateinit var mCalendar: Calendar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         matchDressCode()
-        setContentView(R.layout.activity_task_details)
+        binding = ActivityTaskDetailsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         mCalendar = Calendar.getInstance()
+        mTitleEditText = binding.tvTaskTitle
         initListeners()
     }
 
@@ -50,25 +52,25 @@ abstract class BaseTaskActivity : BaseActivity(), DatePickerDialog.OnDateSetList
 
             override fun afterTextChanged(s: Editable) {
                 if (mTitleEditText.length() != 0) {
-                    tilTaskTitle.error = null
+                    binding.tilTaskTitle.error = null
                 }
             }
         })
 
-        tvTaskNote.setOnClickListener {
+        binding.tvTaskNote.setOnClickListener {
             hideKeyboard(mTitleEditText)
             startActivityForResult(Intent(this, TaskNoteActivity::class.java).putExtra("note",
-                    tvTaskNote.text.toString()), 1)
+                    binding.tvTaskNote.text.toString()), 1)
         }
-        tvTaskReminder.setOnClickListener {
+        binding.tvTaskReminder.setOnClickListener {
             hideKeyboard(mTitleEditText)
             showDatePickerDialog()
         }
-        ivDeleteTaskReminder.setOnClickListener {
-            tvTaskReminder.text = null
-            ivDeleteTaskReminder.gone()
+        binding.ivDeleteTaskReminder.setOnClickListener {
+            binding.tvTaskReminder.text = null
+            binding.ivDeleteTaskReminder.gone()
         }
-        initScrollViewListener(svTaskDetails)
+        initScrollViewListener(binding.svTaskDetails)
     }
 
     private fun showDatePickerDialog() {
@@ -144,14 +146,14 @@ abstract class BaseTaskActivity : BaseActivity(), DatePickerDialog.OnDateSetList
             set(Calendar.MINUTE, minute)
             set(Calendar.SECOND, 0)
         }
-        tvTaskReminder.text = getString(R.string.date_format_at, DateAndTimeFormatter.getDate(mCalendar.timeInMillis),
+        binding.tvTaskReminder.text = getString(R.string.date_format_at, DateAndTimeFormatter.getDate(mCalendar.timeInMillis),
                 DateAndTimeFormatter.getTime(mCalendar.timeInMillis))
-        ivDeleteTaskReminder.visible()
+        binding.ivDeleteTaskReminder.visible()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == RESULT_OK) {
-            tvTaskNote.text = data?.getStringExtra("note")
+            binding.tvTaskNote.text = data?.getStringExtra("note")
         }
     }
 }

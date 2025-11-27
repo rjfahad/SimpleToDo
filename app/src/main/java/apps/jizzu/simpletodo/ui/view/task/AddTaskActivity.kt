@@ -1,7 +1,7 @@
 package apps.jizzu.simpletodo.ui.view.task
 
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import apps.jizzu.simpletodo.R
 import apps.jizzu.simpletodo.data.models.Task
 import apps.jizzu.simpletodo.service.alarm.AlarmHelper
@@ -9,7 +9,6 @@ import apps.jizzu.simpletodo.ui.view.base.BaseTaskActivity
 import apps.jizzu.simpletodo.utils.PreferenceHelper
 import apps.jizzu.simpletodo.utils.toast
 import apps.jizzu.simpletodo.vm.AddTaskViewModel
-import kotlinx.android.synthetic.main.activity_task_details.*
 import java.util.*
 
 class AddTaskActivity : BaseTaskActivity() {
@@ -19,27 +18,29 @@ class AddTaskActivity : BaseTaskActivity() {
         initToolbar(getString(R.string.create_task))
         showKeyboard(mTitleEditText)
 
+        // Initialize helpers for all cases, not just shortcuts
+        AlarmHelper.getInstance().init(applicationContext)
+        PreferenceHelper.getInstance().init(applicationContext)
+
         val position = if (intent.getBooleanExtra("isShortcut", false)) {
-            AlarmHelper.getInstance().init(applicationContext)
-            PreferenceHelper.getInstance().init(applicationContext)
             PreferenceHelper.getInstance().getInt(PreferenceHelper.NEW_TASK_POSITION)
         } else intent.getIntExtra("position", 0)
 
-        btnTaskConfirm.setOnClickListener {
+        binding.btnTaskConfirm.setOnClickListener {
             when {
-                mTitleEditText.length() == 0 -> tilTaskTitle.error = getString(R.string.error_text_input)
-                mTitleEditText.text.toString().trim { it <= ' ' }.isEmpty() -> tilTaskTitle.error = getString(R.string.error_spaces)
+                mTitleEditText.length() == 0 -> binding.tilTaskTitle.error = getString(R.string.error_text_input)
+                mTitleEditText.text.toString().trim { it <= ' ' }.isEmpty() -> binding.tilTaskTitle.error = getString(R.string.error_spaces)
                 else -> {
                     val task = Task().apply {
                         title = mTitleEditText.text.toString()
                         this.position = position
                     }
 
-                    if (tvTaskNote.length() != 0) {
-                        task.note = tvTaskNote.text.toString()
+                    if (binding.tvTaskNote.length() != 0) {
+                        task.note = binding.tvTaskNote.text.toString()
                     }
 
-                    if (tvTaskReminder.length() != 0) {
+                    if (binding.tvTaskReminder.length() != 0) {
                         task.date = mCalendar.timeInMillis
                     }
 
@@ -49,6 +50,7 @@ class AddTaskActivity : BaseTaskActivity() {
                     } else if (task.date != 0L) {
                         AlarmHelper.getInstance().setAlarm(task)
                     }
+                    
                     val viewModel = createViewModel()
                     viewModel.saveTask(task)
                     finish()
@@ -58,5 +60,5 @@ class AddTaskActivity : BaseTaskActivity() {
         }
     }
 
-    override fun createViewModel() = ViewModelProviders.of(this).get(AddTaskViewModel(application)::class.java)
+    override fun createViewModel() = ViewModelProvider(this).get(AddTaskViewModel(application)::class.java)
 }

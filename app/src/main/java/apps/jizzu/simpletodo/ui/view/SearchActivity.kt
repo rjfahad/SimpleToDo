@@ -10,11 +10,12 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import apps.jizzu.simpletodo.R
 import apps.jizzu.simpletodo.data.models.Task
+import apps.jizzu.simpletodo.databinding.ActivitySearchBinding
 import apps.jizzu.simpletodo.service.alarm.AlarmHelper
 import apps.jizzu.simpletodo.ui.recycler.RecyclerViewAdapter
 import apps.jizzu.simpletodo.ui.view.base.BaseActivity
@@ -24,18 +25,18 @@ import apps.jizzu.simpletodo.utils.visible
 import apps.jizzu.simpletodo.vm.SearchTasksViewModel
 import daio.io.dresscode.dressCodeStyleId
 import daio.io.dresscode.matchDressCode
-import kotlinx.android.synthetic.main.activity_search.*
-import kotterknife.bindView
 
 class SearchActivity : BaseActivity(), SearchView.OnQueryTextListener {
-    private val mRecyclerView: RecyclerView by bindView(R.id.rvSearchResultsList)
+    private lateinit var binding: ActivitySearchBinding
+    private val mRecyclerView: RecyclerView by lazy { binding.rvSearchResultsList }
     private lateinit var mViewModel: SearchTasksViewModel
     private lateinit var mAdapter: RecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         matchDressCode()
-        setContentView(R.layout.activity_search)
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         initToolbar()
 
         if (intent.getBooleanExtra("isShortcut", false)) {
@@ -50,7 +51,7 @@ class SearchActivity : BaseActivity(), SearchView.OnQueryTextListener {
         mRecyclerView.layoutManager = LinearLayoutManager(this)
         mAdapter = RecyclerViewAdapter()
         mRecyclerView.adapter = mAdapter
-        llEmptyView.visible()
+        binding.llEmptyView.visible()
 
         mAdapter.setOnItemClickListener(object : RecyclerViewAdapter.ClickListener {
             override fun onTaskClick(v: View, position: Int) {
@@ -65,24 +66,24 @@ class SearchActivity : BaseActivity(), SearchView.OnQueryTextListener {
 
     private fun showEmptyView(isSearchFieldEmpty: Boolean) {
         mAdapter.updateData(arrayListOf())
-        llEmptyView.visible()
+        binding.llEmptyView.visible()
         if (isSearchFieldEmpty) {
-            ivEmptyIllustration.setImageDrawable(AppCompatResources.getDrawable(this,
+            binding.ivEmptyIllustration.setImageDrawable(AppCompatResources.getDrawable(this,
                     R.drawable.illustration_search))
-            tvEmptyTitle.text = getString(R.string.search_view_empty_text)
+            binding.tvEmptyTitle.text = getString(R.string.search_view_empty_text)
         } else {
-            ivEmptyIllustration.setImageDrawable(AppCompatResources.getDrawable(this,
+            binding.ivEmptyIllustration.setImageDrawable(AppCompatResources.getDrawable(this,
                     R.drawable.illustration_not_found))
-            tvEmptyTitle.text = getString(R.string.search_view_not_found_text)
+            binding.tvEmptyTitle.text = getString(R.string.search_view_not_found_text)
         }
     }
 
     private fun showTaskList(tasks: List<Task>) {
-        llEmptyView.gone()
+        binding.llEmptyView.gone()
         mAdapter.updateData(tasks)
     }
 
-    private fun createViewModel() = ViewModelProviders.of(this).get(SearchTasksViewModel(application)::class.java)
+    private fun createViewModel() = ViewModelProvider(this).get(SearchTasksViewModel(application)::class.java)
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.search, menu)

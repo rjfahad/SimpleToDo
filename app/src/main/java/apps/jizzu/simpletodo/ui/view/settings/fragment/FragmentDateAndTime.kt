@@ -7,15 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import apps.jizzu.simpletodo.R
+import apps.jizzu.simpletodo.databinding.FragmentDateAndTimeBinding
 import apps.jizzu.simpletodo.ui.view.settings.fragment.base.BaseSettingsFragment
 import apps.jizzu.simpletodo.utils.PreferenceHelper
 import daio.io.dresscode.dressCodeStyleId
-import kotlinx.android.synthetic.main.fragment_date_and_time.*
 
 class FragmentDateAndTime : BaseSettingsFragment() {
+    private lateinit var binding: FragmentDateAndTimeBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_date_and_time, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = FragmentDateAndTimeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onResume() {
@@ -29,12 +31,12 @@ class FragmentDateAndTime : BaseSettingsFragment() {
     }
 
     private fun setOnClickListeners() {
-        clDateFormat.setOnClickListener {
+        binding.clDateFormat.setOnClickListener {
             showSingleChoiceDialog(R.array.date_format_list, getString(R.string.date_format_dialog_title),
                     PreferenceHelper.DATE_FORMAT_KEY)
         }
 
-        clTimeFormat.setOnClickListener {
+        binding.clTimeFormat.setOnClickListener {
             showSingleChoiceDialog(R.array.time_format_list, getString(R.string.time_format_dialog_title),
                     PreferenceHelper.TIME_FORMAT_KEY)
         }

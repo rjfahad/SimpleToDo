@@ -7,13 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import apps.jizzu.simpletodo.R
+import apps.jizzu.simpletodo.databinding.FragmentLicensesBinding
 import apps.jizzu.simpletodo.ui.view.settings.fragment.base.BaseSettingsFragment
-import kotlinx.android.synthetic.main.fragment_licenses.*
 
 class FragmentLicenses : BaseSettingsFragment() {
+    private lateinit var binding: FragmentLicensesBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_licenses, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = FragmentLicensesBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onResume() {
@@ -27,12 +29,12 @@ class FragmentLicenses : BaseSettingsFragment() {
     }
 
     private fun initButtons() {
-        clKotterKnife.setOnClickListener { openUri(KOTTER_KNIFE_PAGE) }
-        clCircularAnim.setOnClickListener { openUri(CIRCULAR_ANIM_PAGE) }
-        clRxJava.setOnClickListener { openUri(RX_JAVA_PAGE) }
-        clRxKotlin.setOnClickListener { openUri(RX_KOTLIN_PAGE) }
-        clDressCode.setOnClickListener { openUri(DRESS_CODE_PAGE) }
-        clMaterialIntro.setOnClickListener { openUri(MATERIAL_INTRO_PAGE) }
+        binding.clKotterKnife.setOnClickListener { openUri(KOTTER_KNIFE_PAGE) }
+        binding.clCircularAnim.setOnClickListener { openUri(CIRCULAR_ANIM_PAGE) }
+        binding.clRxJava.setOnClickListener { openUri(RX_JAVA_PAGE) }
+        binding.clRxKotlin.setOnClickListener { openUri(RX_KOTLIN_PAGE) }
+        binding.clDressCode.setOnClickListener { openUri(DRESS_CODE_PAGE) }
+        binding.clMaterialIntro.setOnClickListener { openUri(MATERIAL_INTRO_PAGE) }
     }
 
     private fun openUri(uri: String) = startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(uri)))

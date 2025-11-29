@@ -7,17 +7,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import apps.jizzu.simpletodo.BuildConfig
 import apps.jizzu.simpletodo.R
+import apps.jizzu.simpletodo.databinding.FragmentSettingsBinding
 import apps.jizzu.simpletodo.ui.view.settings.fragment.base.BaseSettingsFragment
 import apps.jizzu.simpletodo.utils.DeviceInfo
 import apps.jizzu.simpletodo.utils.toast
-import kotlinx.android.synthetic.main.fragment_settings.*
 
 class FragmentSettings : Fragment() {
 
+    private var _binding: FragmentSettingsBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_settings, container, false)
+        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -26,29 +34,18 @@ class FragmentSettings : Fragment() {
     }
 
     private fun initButtons() {
-        tvUI.setOnClickListener { openFragment(FragmentUI()) }
-        tvNotifications.setOnClickListener { openFragment(FragmentNotifications()) }
-        tvDateAndTime.setOnClickListener { openFragment(FragmentDateAndTime()) }
-        tvBackupAndRestore.setOnClickListener { openFragment(FragmentBackupAndRestore()) }
-        tvRate.setOnClickListener { rateThisApp() }
-        tvFeedback.setOnClickListener { sendFeedback() }
-        tvOtherApps.setOnClickListener { openUri(GOOGLE_PLAY_PAGE) }
-        tvGitHub.setOnClickListener { openUri(GIT_HUB_PAGE) }
-        tvPrivacyPolicy.setOnClickListener { openUri(PRIVACY_POLICY_PAGE) }
-        tvLicenses.setOnClickListener { openFragment(FragmentLicenses()) }
+        binding.tvUI.setOnClickListener { openFragment(FragmentUI()) }
+        binding.tvNotifications.setOnClickListener { openFragment(FragmentNotifications()) }
+        binding.tvDateAndTime.setOnClickListener { openFragment(FragmentDateAndTime()) }
+        binding.tvBackupAndRestore.setOnClickListener { openFragment(FragmentBackupAndRestore()) }
+        binding.tvFeedback.setOnClickListener { sendFeedback() }
+        binding.tvGitHub.setOnClickListener { openUri(GIT_HUB_PAGE) }
+        binding.tvPrivacyPolicy.setOnClickListener { openUri(PRIVACY_POLICY_PAGE) }
+        binding.tvLicenses.setOnClickListener { openFragment(FragmentLicenses()) }
     }
 
     private fun openFragment(fragment: BaseSettingsFragment) =
             fragmentManager?.beginTransaction()?.replace(R.id.flFragmentContainer, fragment)?.addToBackStack(null)?.commit()
-
-    private fun rateThisApp() {
-        val appPackageName = activity?.packageName
-        try {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("$APP_PAGE_SHORT_LINK$appPackageName")))
-        } catch (exception: android.content.ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("$APP_PAGE_LONG_LINK$appPackageName")))
-        }
-    }
 
     private fun sendFeedback() {
         val email = Intent(Intent.ACTION_SENDTO).apply {
@@ -56,7 +53,7 @@ class FragmentSettings : Fragment() {
             putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.author_gmail)))
             putExtra(Intent.EXTRA_SUBJECT, getString(R.string.feedback_title))
             putExtra(Intent.EXTRA_TEXT, getString(R.string.feedback_device_info) + "\n" + DeviceInfo.deviceInfo
-                    + "\n" + getString(R.string.feedback_app_version) + BuildConfig.VERSION_NAME
+                    + "\n" + getString(R.string.feedback_app_version) + "version"
                     + "\n" + getString(R.string.feedback))
         }
 
@@ -76,11 +73,8 @@ class FragmentSettings : Fragment() {
     }
 
     private companion object {
-        const val GOOGLE_PLAY_PAGE = "https://play.google.com/store/apps/developer?id=Ilya+Ponomarenko"
-        const val GIT_HUB_PAGE = "https://github.com/Jizzu/SimpleToDo"
-        const val PRIVACY_POLICY_PAGE = "https://github.com/Jizzu/SimpleToDo/blob/master/PRIVACY_POLICY.md"
-        const val APP_PAGE_SHORT_LINK = "market://details?id="
-        const val APP_PAGE_LONG_LINK = "https://play.google.com/store/apps/details?id="
+        const val GIT_HUB_PAGE = "https://github.com/rjfahad/SimpleToDo"
+        const val PRIVACY_POLICY_PAGE = "https://github.com/rjfahad/SimpleToDo/blob/master/PRIVACY_POLICY.md"
         const val SCHEME = "mailto"
     }
 }

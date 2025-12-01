@@ -11,12 +11,15 @@ import apps.jizzu.simpletodo.R
 
 abstract class BaseDialogFragment : DialogFragment() {
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NO_TITLE, R.style.DialogAnimation)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog?.window?.apply {
-            requestFeature(Window.FEATURE_NO_TITLE)
             setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            attributes?.windowAnimations = R.style.DialogAnimation
         }
     }
 

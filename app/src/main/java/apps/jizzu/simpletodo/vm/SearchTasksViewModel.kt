@@ -3,13 +3,13 @@ package apps.jizzu.simpletodo.vm
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.switchMap
 import apps.jizzu.simpletodo.data.models.Task
 import apps.jizzu.simpletodo.vm.base.BaseViewModel
 
 class SearchTasksViewModel(app: Application) : BaseViewModel(app) {
     val searchInputLiveData: MutableLiveData<String> = MutableLiveData()
-    val searchResultLiveData: LiveData<List<Task>> = Transformations.switchMap(searchInputLiveData) {
+    val searchResultLiveData: LiveData<List<Task>> = searchInputLiveData.switchMap {
         if (it.isNotEmpty()) {
             repository.getTasksForSearch(it)
         } else {

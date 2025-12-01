@@ -7,33 +7,43 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import apps.jizzu.simpletodo.R
+import apps.jizzu.simpletodo.databinding.DialogRateThisAppBinding
 import apps.jizzu.simpletodo.ui.dialogs.base.BaseDialogFragment
 import apps.jizzu.simpletodo.utils.PreferenceHelper
-import kotlinx.android.synthetic.main.dialog_rate_this_app.*
 
 class RateThisAppDialogFragment : BaseDialogFragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater.inflate(R.layout.dialog_rate_this_app, container, false)
+    private var _binding: DialogRateThisAppBinding? = null
+    private val binding get() = _binding!!
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        _binding = DialogRateThisAppBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initButtons()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun initButtons() {
         val preferenceHelper = PreferenceHelper.getInstance()
 
-        tvRate.setOnClickListener {
+        binding.tvRate.setOnClickListener {
             preferenceHelper.putBoolean(PreferenceHelper.IS_NEED_TO_SHOW_RATE_DIALOG_LATER, false)
             rateThisApp()
             dismiss()
         }
-        tvNeverShow.setOnClickListener {
+        binding.tvNeverShow.setOnClickListener {
             preferenceHelper.putBoolean(PreferenceHelper.IS_NEED_TO_SHOW_RATE_DIALOG_LATER, false)
             dismiss()
         }
-        tvShowLater.setOnClickListener {
+        binding.tvShowLater.setOnClickListener {
             preferenceHelper.putInt(PreferenceHelper.LAUNCHES_COUNTER, 0)
             dismiss()
         }

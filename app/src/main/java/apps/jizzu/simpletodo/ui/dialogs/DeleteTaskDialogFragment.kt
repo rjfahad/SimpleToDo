@@ -5,19 +5,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import apps.jizzu.simpletodo.R
 import apps.jizzu.simpletodo.data.models.Task
+import apps.jizzu.simpletodo.databinding.DialogDefaultBinding
 import apps.jizzu.simpletodo.service.alarm.AlarmHelper
 import apps.jizzu.simpletodo.ui.dialogs.base.BaseDialogFragment
 import apps.jizzu.simpletodo.vm.DeleteTaskViewModel
-import kotlinx.android.synthetic.main.dialog_default.*
 
 class DeleteTaskDialogFragment(val task: Task) : BaseDialogFragment() {
     private lateinit var mViewModel: DeleteTaskViewModel
+    private lateinit var binding: DialogDefaultBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater.inflate(R.layout.dialog_default, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = DialogDefaultBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -26,9 +29,9 @@ class DeleteTaskDialogFragment(val task: Task) : BaseDialogFragment() {
     }
 
     private fun initDialog() {
-        tvDialogMessage.setText(R.string.dialog_message)
-        tvConfirm.setText(R.string.action_delete)
-        tvConfirm.setOnClickListener {
+        binding.tvDialogMessage.setText(R.string.dialog_message)
+        binding.tvConfirm.setText(R.string.action_delete)
+        binding.tvConfirm.setOnClickListener {
             mViewModel.deleteTask(task)
             if (task.date != 0L) {
                 val alarmHelper = AlarmHelper.getInstance()
@@ -37,8 +40,8 @@ class DeleteTaskDialogFragment(val task: Task) : BaseDialogFragment() {
             }
             activity?.finish()
         }
-        tvCancel.setOnClickListener { dismiss() }
+        binding.tvCancel.setOnClickListener { dismiss() }
     }
 
-    private fun createViewModel(application: Application) = ViewModelProviders.of(this).get(DeleteTaskViewModel(application)::class.java)
+    private fun createViewModel(application: Application) = ViewModelProvider(this).get(DeleteTaskViewModel(application)::class.java)
 }

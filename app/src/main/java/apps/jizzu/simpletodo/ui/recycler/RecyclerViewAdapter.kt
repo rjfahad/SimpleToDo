@@ -113,7 +113,6 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.TaskViewHol
             (mContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.getMetrics(displayMetrics)
             val width = displayMetrics.widthPixels
             val height = displayMetrics.heightPixels
-            Log.d(TAG, "width = $width, height = $height")
 
             holder.date.gone()
             if (width >= 1080 || height >= 1776) {

@@ -13,7 +13,7 @@ import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import apps.jizzu.simpletodo.R
 import apps.jizzu.simpletodo.data.models.Task
-import apps.jizzu.simpletodo.ui.view.MainActivity
+import apps.jizzu.simpletodo.data.database.TasksDatabase
 import apps.jizzu.simpletodo.utils.DateAndTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
@@ -27,7 +27,9 @@ class ViewFactory internal constructor(private val mContext: Context) : RemoteVi
 
     override fun onDataSetChanged() {
         mWidgetData = arrayListOf()
-        mWidgetData.addAll(MainActivity.mTaskList)
+        // Get tasks directly from database
+        val tasks = TasksDatabase.getInstance(mContext).taskDAO().getAllTasks()
+        mWidgetData.addAll(tasks)
     }
 
     override fun getViewAt(position: Int): RemoteViews {
@@ -91,7 +93,6 @@ class ViewFactory internal constructor(private val mContext: Context) : RemoteVi
             (mContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.getMetrics(displayMetrics)
             val width = displayMetrics.widthPixels
             val height = displayMetrics.heightPixels
-            Log.d(TAG, "width = $width, height = $height")
 
             remoteViews.setViewVisibility(R.id.tvItemDate, View.GONE)
             if (width >= 1080 || height >= 1776) {

@@ -15,8 +15,9 @@ class WidgetProvider : AppWidgetProvider() {
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
 
+        val flags = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         val onTitleClickPendingIntent = PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java)
-                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP), PendingIntent.FLAG_UPDATE_CURRENT)
+                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP), flags)
 
         for (appWidgetId in appWidgetIds) {
             val adapter = Intent(context, WidgetService::class.java)
@@ -27,7 +28,7 @@ class WidgetProvider : AppWidgetProvider() {
             widget.setRemoteAdapter(R.id.lvWidgetTasksList, adapter)
             widget.setOnClickPendingIntent(R.id.tvWidgetTitle, onTitleClickPendingIntent)
 
-            val onTaskClickPendingIntent = PendingIntent.getBroadcast(context, 0, Intent(context, WidgetProvider::class.java), 0)
+            val onTaskClickPendingIntent = PendingIntent.getBroadcast(context, 0, Intent(context, WidgetProvider::class.java), flags)
             widget.setPendingIntentTemplate(R.id.lvWidgetTasksList, onTaskClickPendingIntent)
 
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.lvWidgetTasksList)

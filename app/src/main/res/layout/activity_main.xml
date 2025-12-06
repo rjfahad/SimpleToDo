@@ -8,6 +8,18 @@
     android:background="?attr/colorBackground"
     tools:context=".ui.view.MainActivity">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTasksList"
         android:layout_width="match_parent"
@@ -15,10 +27,9 @@
         android:layout_marginBottom="56dp"
         android:clipToPadding="false"
         android:overScrollMode="never"
-        android:paddingTop="?attr/actionBarSize"
-        android:paddingBottom="28dp" />
-
-    <include layout="@layout/toolbar" />
+        android:paddingTop="16dp"
+        android:paddingBottom="28dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <LinearLayout
         android:id="@+id/llEmptyView"

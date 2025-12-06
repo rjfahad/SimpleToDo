@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorBackground"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <include layout="@layout/toolbar" />
@@ -12,6 +13,7 @@
         android:id="@+id/svTaskDetails"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
         android:overScrollMode="never"
         android:scrollbarSize="0dp"
         android:scrollbars="vertical">
@@ -21,6 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
+            android:layout_marginTop="8dp"
             app:hintAnimationEnabled="false"
             app:hintEnabled="false">
 
@@ -34,7 +37,7 @@
                 android:inputType="textAutoCorrect|textCapSentences|textMultiLine"
                 android:maxLength="500"
                 android:minHeight="48dp"
-                android:textColor="?android:attr/android:textColorPrimary"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textColorHint="@color/dullGrey"
                 android:textSize="19sp" />
         </com.google.android.material.textfield.TextInputLayout>

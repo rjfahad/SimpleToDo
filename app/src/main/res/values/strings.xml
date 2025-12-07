@@ -115,6 +115,10 @@
     <string name="permission_microphone_snackbar_with_rationale">Microphone permission is needed to add new task using voice</string>
     <string name="permission_storage_snackbar_no_permission">Storage permission isn\'t granted</string>
     <string name="permission_microphone_snackbar_no_permission">Microphone permission isn\'t granted</string>
+    <string name="permission_notification_denied_toast">Notification permission denied</string>
+    <string name="permission_notification_toast">Open "Permissions" and grant the "Notifications" permission</string>
+    <string name="permission_notification_snackbar_with_rationale">Notification permission is needed to show app notifications</string>
+    <string name="permission_notification_snackbar_no_permission">Notifications permission isn\'t granted</string>
     <string name="permission_snackbar_button_grant">GRANT</string>
     <string name="permission_snackbar_button_settings">SETTINGS</string>
 
@@ -128,9 +132,10 @@
 
     <string name="notification_channel">Notifications</string>
     <string name="general_notification_channel">General Notification</string>
+    <string name="dismiss">Dismiss</string>
 
     <string name="widget_title">TODO LIST</string>
-    <string name="author_gmail">ilya.ponomarenko.dev@gmail.com</string>
+    <string name="author_gmail">my.rjfahad@gmail.com</string>
 
     ////////////////<!-- "What's New?" page -->////////////////
     <string name="whats_new_title">W H A T \' S \u0020\u0020 N E W ?</string>

@@ -1,70 +1,117 @@
-# Simple ToDo-Frequently Asked Questions(FAQ)
+# Simple ToDo - Frequently Asked Questions (FAQ)
 
-This "Frequently Asked Questions" document will be updated continually to accomodate new information with respect to new updates and changes on the app and will be used in the app to help users find answers to their questions.
+Welcome to the Simple ToDo FAQ! This document is regularly updated to reflect new features and improvements. Find answers to common questions below.
 
-## What is Simple ToDo?
+## General Questions
 
-This is simple task management application which helps in keeping you from missing out on important things.
+### What is Simple ToDo?
 
-## How do I create tasks?
+Simple ToDo is a modern, open-source task management application designed to help you stay organized and never miss important tasks. It's completely free, ad-free, and prioritizes your privacy.
 
-This can be done by using the "+" button at the bottom right of the page.
+### Is Simple ToDo really free?
 
-## How do I delete a tasks?
+Yes! Simple ToDo is 100% free with no ads, no subscriptions, and no hidden costs. It's open-source software licensed under MIT.
 
-This can be done by swiping on a task to any direction.
+## Task Management
 
-## Can I change the position of tasks on the task list?
+### How do I create tasks?
 
-Yes. This can be done by tapping and holding on a task followed by moving it either upwards or downwards.
+Tap the "+" (plus) button at the bottom right of the screen to create a new task.
 
-## How do I set reminders for tasks?
+### How do I delete tasks?
 
-This can be done by creating a task and activating the "Set reminder" option.
+Simply swipe a task in any direction (left or right) to delete it.
 
-## Can I set a date and time to be reminded of a task?
+### Can I reorder tasks?
 
-Yes. This can be done by creating a task, activating the reminder option and setting the date and time respectively.
+Yes! Tap and hold on a task, then drag it up or down to change its position in the list.
 
-## Can I search for tasks?
+### Can I add notes to tasks?
 
-Yes. This can be done by using the search button which can be found at the top right corner of the tasks page. It is the second icon from the right to be precise.
+Yes! You can add detailed notes to any task for additional context and information.
 
-## Do I get notified on my created tasks?
+### How do I search for tasks?
 
-Yes. You are notified of all created tasks by default. It displays on the notification area of your device.
+Tap the search icon at the top right corner of the main screen to search through your tasks.
 
-## How do I turn off task notifications?
+## Reminders & Notifications
 
-This can be done by unchecking the "enable general notification" box in the settings page.
+### How do I set reminders for tasks?
 
-## Is there a notification sound for reminders?
+When creating or editing a task, enable the "Set reminder" option. You can then specify the exact date and time for your reminder.
 
-Yes, notification sounds have been set by default for reminders.
+### Can I customize notification sounds?
 
-## Can I set my own notification sound?
+Yes! Go to Settings > Notifications to customize your notification sound preferences.
 
-Yes. This can be done by tapping the notification sound option on the settings page.
+### How do I turn off notifications?
 
-## How do I move my tasks to another phone?
+Go to Settings > Notifications and toggle off "Enable general notifications" to disable all notifications.
 
-This can be done by using the backup & restore feature.
+### Do I get notified for all tasks?
 
-## How do I back up my tasks?
+By default, you receive notifications for tasks with reminders set. You can customize notification behavior in the Settings.
 
-This can be done by tapping the backup option on the settings page(there will be a need to allow storage permission).
+## Backup & Restore
 
-## Will previous backups be affected?
+### How does backup work?
 
-Yes. When a new backup is created, the previous backup file is deleted. However, a message will appear to warn you before taking action.
+Simple ToDo allows you to create local backups of all your tasks. Go to Settings > Backup & Restore and tap "Create Backup" to save your tasks.
 
-## How do I restore backups? 
+### Where are backups stored?
 
-This can be done by tapping the restore backup option on the settings page and tasks are automatically restored from the default backup location.
+Backups are stored locally on your device. You'll need to grant storage permission when creating or restoring backups.
 
-## Where can I leave feedbacks or suggestions or report bugs?
+### Will creating a new backup overwrite my old one?
 
-You can leave them on our app page on Google Play Store
-Or you can report them directly on:
+Yes, creating a new backup will replace the previous backup file. The app will warn you before proceeding.
 
-Our Github issue page - https://github.com/Jizzu/SimpleToDo/issues
+### How do I restore from a backup?
+
+Go to Settings > Backup & Restore and tap "Restore Backup". Your tasks will be automatically restored from the backup file.
+
+### Can I transfer tasks to a new phone?
+
+Yes! Create a backup on your old device, transfer the backup file to your new device, then use the restore function.
+
+## Customization
+
+### Can I change the app's theme?
+
+Yes! Simple ToDo supports multiple themes. Go to Settings > User Interface to customize the appearance.
+
+### Does the app support widgets?
+
+Yes! Long-press on your home screen, select Widgets, and add the Simple ToDo widget to access your tasks quickly.
+
+## Technical & Support
+
+### Does Simple ToDo require internet connection?
+
+No! Simple ToDo works completely offline. All your data is stored locally on your device.
+
+### Is my data private?
+
+Absolutely! Your tasks are stored only on your device. We don't collect, store, or transmit your personal data to any servers.
+
+### How do I report bugs or request features?
+
+- Report issues on our [GitHub Issues page](https://github.com/rjfahad/SimpleToDo/issues)
+- Leave feedback on the Google Play Store
+- For general questions, check this FAQ first
+
+### The app isn't working properly. What should I do?
+
+1. Make sure you're running the latest version
+2. Try restarting the app
+3. Check if you've granted necessary permissions
+4. Create a backup of your tasks
+5. If the issue persists, report it on GitHub with details
+
+### Can I contribute to the project?
+
+Yes! Simple ToDo is open-source. Check out the [GitHub repository](https://github.com/rjfahad/SimpleToDo) for contribution guidelines.
+
+---
+
+**Still have questions?** Feel free to open an issue on GitHub or contact us through the app's feedback option!

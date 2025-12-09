@@ -1,23 +1,34 @@
 ## Privacy Policy
 
-Ilya Ponomarenko built the Simple ToDo app as an Open Source app. This SERVICE is provided by Ilya Ponomarenko at no cost and is intended for use as is.
+**Last Updated: December 9, 2025**
 
-This page is used to inform visitors regarding my policies with the collection, use, and disclosure of Personal Information if anyone decided to use my Service.
+Simple ToDo is an open-source task management application maintained by rjfahad. This app is provided at no cost and is intended for use as is.
 
-If you choose to use my Service, then you agree to the collection and use of information in relation to this policy. The Personal Information that I collect is used for providing and improving the Service. I will not use or share your information with anyone except as described in this Privacy Policy.
+This Privacy Policy explains how we handle information when you use Simple ToDo. We are committed to protecting your privacy and ensuring transparency about our data practices.
 
-The terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, which is accessible at Simple ToDo unless otherwise defined in this Privacy Policy.
+By using Simple ToDo, you agree to the terms outlined in this Privacy Policy.
+
+### Our Privacy Commitment
+
+**Simple ToDo prioritizes your privacy. All your tasks and data are stored locally on your device. We do not collect, transmit, or store your personal information on any remote servers.**
 
 **Information Collection and Use**
 
-For a better experience, while using our Service, I may require you to provide us with certain personally identifiable information, including but not limited to Android Advertising ID. The information that I request will be retained on your device and is not collected by me in any way.
+Simple ToDo operates on a privacy-first principle:
 
-The app does use third party services that may collect information used to identify you.
+- **Local Storage Only**: All your tasks, notes, and settings are stored exclusively on your device
+- **No Account Required**: You don't need to create an account or provide personal information
+- **No Data Transmission**: Your task data is never sent to external servers
+- **No Analytics**: We do not collect usage statistics or analytics
+- **No Advertising**: The app is completely ad-free
 
-Link to privacy policy of third party service providers used by the app
+**Permissions Used:**
 
-*   [Firebase Analytics](https://firebase.google.com/policies/analytics)
-*   [Crashlytics](https://firebase.google.com/terms/fabric-data-processing-terms/)
+- **Storage Permission**: Required for backup and restore functionality. This allows you to save your tasks to a file and restore them later
+- **Notification Permission**: Required to send reminders for your tasks
+- **Alarm Permission**: Required to schedule task reminders at specific times
+
+These permissions are only used for their stated purposes and do not involve any data collection.
 
 **Log Data**
 
@@ -29,33 +40,37 @@ Cookies are files with a small amount of data that are commonly used as anonymou
 
 This Service does not use these “cookies” explicitly. However, the app may use third party code and libraries that use “cookies” to collect information and improve their services. You have the option to either accept or refuse these cookies and know when a cookie is being sent to your device. If you choose to refuse our cookies, you may not be able to use some portions of this Service.
 
-**Service Providers**
+**Third-Party Services**
 
-I may employ third-party companies and individuals due to the following reasons:
-
-*   To facilitate our Service;
-*   To provide the Service on our behalf;
-*   To perform Service-related services; or
-*   To assist us in analyzing how our Service is used.
-
-I want to inform users of this Service that these third parties have access to your Personal Information. The reason is to perform the tasks assigned to them on our behalf. However, they are obligated not to disclose or use the information for any other purpose.
-
-**Security**
-
-I value your trust in providing us your Personal Information, thus we are striving to use commercially acceptable means of protecting it. But remember that no method of transmission over the internet, or method of electronic storage is 100% secure and reliable, and I cannot guarantee its absolute security.
+Simple ToDo does not use any third-party analytics, advertising, or tracking services. The app operates completely independently without external dependencies.
 
 **Links to Other Sites**
 
-This Service may contain links to other sites. If you click on a third-party link, you will be directed to that site. Note that these external sites are not operated by me. Therefore, I strongly advise you to review the Privacy Policy of these websites. I have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party sites or services.
+While the app itself doesn't contain external links, our documentation (README, GitHub) may link to external resources. We are not responsible for the privacy practices of external websites. We encourage you to review their privacy policies.
 
-**Children’s Privacy**
+**Children's Privacy**
 
-These Services do not address anyone under the age of 13\. I do not knowingly collect personally identifiable information from children under 13\. In the case I discover that a child under 13 has provided me with personal information, I immediately delete this from our servers. If you are a parent or guardian and you are aware that your child has provided us with personal information, please contact me so that I will be able to do necessary actions.
+Simple ToDo is suitable for users of all ages. Since we do not collect any personal information, there are no privacy concerns related to children's data. The app can be safely used by anyone, including children under 13, as no data collection occurs.
+
+**Open Source**
+
+Simple ToDo is open-source software. You can review the complete source code on [GitHub](https://github.com/rjfahad/SimpleToDo) to verify our privacy claims and see exactly how the app works.
 
 **Changes to This Privacy Policy**
 
-I may update our Privacy Policy from time to time. Thus, you are advised to review this page periodically for any changes. I will notify you of any changes by posting the new Privacy Policy on this page. These changes are effective immediately after they are posted on this page.
+We may update this Privacy Policy from time to time to reflect changes in the app or legal requirements. Any changes will be posted on this page with an updated "Last Updated" date. We encourage you to review this policy periodically.
+
+Continued use of the app after changes constitutes acceptance of the updated policy.
 
 **Contact Us**
 
-If you have any questions or suggestions about my Privacy Policy, do not hesitate to contact me at ilya.ponomarenko.dev@gmail.com
+If you have any questions or concerns about this Privacy Policy or how Simple ToDo handles data, please contact us:
+
+- **GitHub Issues**: [https://github.com/rjfahad/SimpleToDo/issues](https://github.com/rjfahad/SimpleToDo/issues)
+- **GitHub Profile**: [https://github.com/rjfahad](https://github.com/rjfahad)
+
+---
+
+**Summary**: Simple ToDo respects your privacy. Your data stays on your device, period. No tracking, no ads, no data collection.
+
+If you have any questions or suggestions about my Privacy Policy, do not hesitate to contact me at <ilya.ponomarenko.dev@gmail.com>

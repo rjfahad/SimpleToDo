@@ -2,100 +2,69 @@
 
 <img src="/screenshots/icon.png" height="200px"/> <br>
 
-A modernized, feature-rich task management app designed to help you stay organized and never miss important tasks. Simple ToDo combines elegant design with powerful functionality to make task management effortless. ⏰
+Simple ToDo helps you manage daily tasks and remember important things.
 
-## Screenshots
+## Screenshots:
 
 <img src="/screenshots/en_1.png" height="400px"/> <img src="/screenshots/en_2.png" height="400px"/>
 <img src="/screenshots/en_3.png" height="400px"/> <img src="/screenshots/en_4.png" height="400px"/>
 
-## ✨ Key Features
+## Features
 
-- **100% Free & Ad-Free** - No distractions, no hidden costs
-- **Modern Material Design** - Clean, intuitive interface
-- **Smart Reminders** - Never miss a deadline with customizable notifications
-- **Advanced Search** - Quickly find any task
-- **Home Screen Widgets** - Access your tasks without opening the app
-- **Theme Customization** - Personalize your experience
-- **Voice Input** - Add tasks hands-free
-- **Backup & Restore** - Keep your tasks safe and transfer between devices
-- **Intuitive Gestures** - Drag & drop to reorder, swipe to delete
-- **Offline First** - Works perfectly without internet connection
+- Free and no ads
+- Modern design
+- Reminder notifications
+- Search
+- Widget support
+- Multiple themes
+- Voice input for adding tasks
+- Backup & Restore
+- Drag & drop and swipe gestures
 
-## 🎯 Recent Updates
+## Recent changes
 
-This project has been revived and modernized with significant improvements:
+I've updated this project with some improvements:
 
-- ✅ Refactored architecture for better performance and maintainability
-- ✅ Enhanced backup and restore functionality
-- ✅ Updated to modern Android development practices
-- ✅ Improved UI components and user experience
-- ✅ Updated dependencies and fixed deprecated APIs
-- ✅ Better permission handling
+- Migrated to view binding (removed synthetic imports)
+- Better backup/restore implementation
+- Updated gradle and dependencies
+- Fixed deprecated APIs
+- Better notification handling for Android 13+
 
-## 📋 Planned Features
+## TODO
 
-- [ ] Native dark theme support
-- [ ] Enhanced widget functionality
-- [ ] Cloud sync capabilities
-- [ ] Task categories and tags
-- [ ] Recurring tasks
-- [ ] Priority levels
+- Native dark theme
+- Better widget
+- Maybe cloud sync
+- Task categories
+- Recurring tasks
 
-## 🤔 FAQ
+## FAQ
 
-Have questions? Check out our comprehensive [FAQs page](FAQs.md) for answers to common questions!
+See [FAQs page](FAQs.md) if you have questions.
 
-## 📥 Installation
+## Build from source
 
-You can build and install Simple ToDo from source:
-
-1. Clone this repository
-2. Open the project in Android Studio
-3. Build and run on your device or emulator
+Clone and open in Android Studio:
 
 ```bash
 git clone https://github.com/rjfahad/SimpleToDo.git
-cd SimpleToDo
-# Open in Android Studio and build
 ```
 
-Alternatively, check the [Releases](https://github.com/rjfahad/SimpleToDo/releases) page for pre-built APK files.
+Or check [Releases](https://github.com/rjfahad/SimpleToDo/releases) for APK files.
 
-## 🛠️ Built With
+## Tech stack
 
-- **Kotlin** - Modern, concise programming language
-- **Android Architecture Components** - ViewModel, LiveData, Room Database
-- **Material Design Components** - Beautiful, consistent UI
-- **Coroutines** - Efficient asynchronous programming
+- Kotlin
+- Android Architecture Components (ViewModel, LiveData, Room)
+- Material Design
 
-## 🤝 Contributing
+## Contributing
 
-Contributions are welcome! If you'd like to contribute:
+Feel free to fork and submit PRs. See [CONTRIBUTORS.md](CONTRIBUTORS.md) for contributors list.
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+## License
 
-See [CONTRIBUTORS.md](CONTRIBUTORS.md) for the list of contributors.
+MIT License - see [LICENSE](LICENSE) file.
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-Originally created by Ilya Ponomarenko. Revived and modernized by [rjfahad](https://github.com/rjfahad) in 2025.
-
-## 📞 Support
-
-- Report bugs or request features via [GitHub Issues](https://github.com/rjfahad/SimpleToDo/issues)
-- For questions, check the [FAQs](FAQs.md) first
-
-## ⭐ Show Your Support
-
-If you find this project helpful, please give it a star! It helps others discover the app and motivates continued development.
-
----
-
-**Made with ❤️ for productivity enthusiasts**
+Original by Ilya Ponomarenko. Updated by rjfahad (2025).

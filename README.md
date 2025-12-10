@@ -2,8 +2,6 @@
 
 > **Note:** This project is actively maintained by [@rjfahad](https://github.com/rjfahad). Originally created by [Ilya Ponomarenko](https://github.com/Jizzu), I've revived it and keeping it updated with modern Android practices.
 
-<img src="/screenshots/icon.png" height="200px"/> <br>
-
 Simple ToDo helps you manage daily tasks and remember important things.
 
 ## Screenshots

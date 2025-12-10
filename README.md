@@ -6,7 +6,7 @@
 
 Simple ToDo helps you manage daily tasks and remember important things.
 
-## Screenshots:
+## Screenshots
 
 <img src="/screenshots/en_1.png" height="400px"/> <img src="/screenshots/en_2.png" height="400px"/>
 <img src="/screenshots/en_3.png" height="400px"/> <img src="/screenshots/en_4.png" height="400px"/>
